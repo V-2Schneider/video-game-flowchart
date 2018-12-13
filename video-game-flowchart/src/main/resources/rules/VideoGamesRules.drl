@@ -18,3 +18,9 @@ rule "GoodBye"
     then
         System.out.println( myMessage );
 end
+
+rule "Init"
+	when
+	then
+		System.out.println("Witam w grach komputerowych");
+end
