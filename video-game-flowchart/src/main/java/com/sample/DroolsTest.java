@@ -1,5 +1,7 @@
 package com.sample;
 
+import java.awt.EventQueue;
+
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -8,45 +10,24 @@ import org.kie.api.runtime.KieSession;
  * This is a sample class to launch a rule.
  */
 public class DroolsTest {
-	/*
-    public static final void main(String[] args) {
-        try {
-            // load up the knowledge base
-	        KieServices ks = KieServices.Factory.get();
-    	    KieContainer kContainer = ks.getKieClasspathContainer();
-        	KieSession kSession = kContainer.newKieSession("ksession-rules");
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UserInterface frame = new UserInterface();
+					frame.setVisible(true);
+					// load up the knowledge base
+			        KieServices ks = KieServices.Factory.get();
+		    	    KieContainer kContainer = ks.getKieClasspathContainer();
+		        	KieSession kSession = kContainer.newKieSession("ksession-rules");
 
-            kSession.fireAllRules();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-	*/
-    public static class Message {
-
-        public static final int HELLO = 0;
-        public static final int GOODBYE = 1;
-
-        private String message;
-
-        private int status;
-
-        public String getMessage() {
-            return this.message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public int getStatus() {
-            return this.status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-    }
+		            kSession.fireAllRules();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 }

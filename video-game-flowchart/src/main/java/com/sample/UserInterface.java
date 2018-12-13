@@ -26,27 +26,12 @@ public class UserInterface extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UserInterface frame = new UserInterface();
-					frame.setVisible(true);
-					// load up the knowledge base
-			        KieServices ks = KieServices.Factory.get();
-		    	    KieContainer kContainer = ks.getKieClasspathContainer();
-		        	KieSession kSession = kContainer.newKieSession("ksession-rules");
-
-		            kSession.fireAllRules();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public static String GetQuestions(Message msg, String question) {
+		System.out.println(question);
+		String res = "Past";
+		return res;
 	}
+	
 
 	/**
 	 * Create the frame.

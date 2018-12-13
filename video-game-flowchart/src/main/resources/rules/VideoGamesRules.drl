@@ -1,26 +1,31 @@
 package com.sample
  
-import com.sample.DroolsTest.Message;
+import com.sample.Message;
+import java.util.ArrayList;
+import function com.sample.UserInterface.GetQuestions;
  
-rule "Hello World"
-    when
-        m : Message( status == Message.HELLO, myMessage : message )
-    then
-        System.out.println( myMessage );
-        m.setMessage( "Goodbye cruel world" );
-        m.setStatus( Message.GOODBYE );
-        update( m );
-end
-
-rule "GoodBye"
-    when
-        Message( status == Message.GOODBYE, myMessage : message )
-    then
-        System.out.println( myMessage );
-end
 
 rule "Init"
 	when
 	then
 		System.out.println("Witam w grach komputerowych");
+		ArrayList<String> ans = new ArrayList<>();
+		ans.add("PAST");
+		Message mes = new Message(ans);
+		mes.SetResult(GetQuestions(mes, "LET'S PLAY A GAME"));
+		insert(mes);
+end
+
+rule "PAST"
+	when 
+		Message(result == "Past")
+	then
+		System.out.println("yee");
+end
+
+rule "PRESENT"
+	when 
+		Message(result == "Present")
+	then
+		System.out.println("What???");
 end
