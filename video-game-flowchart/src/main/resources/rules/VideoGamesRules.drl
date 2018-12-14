@@ -11,8 +11,9 @@ rule "Init"
 		System.out.println("Witam w grach komputerowych");
 		ArrayList<String> ans = new ArrayList<>();
 		ans.add("PAST");
+		ans.add("Present");
 		Message mes = new Message(ans);
-		mes.SetResult(GetQuestions(mes, "LET'S PLAY A GAME"));
+		mes.SetResult(GetQuestions(mes, "LET'S PLAY A GAME\n\nfirst: what time period are you thinking?"));
 		insert(mes);
 end
 

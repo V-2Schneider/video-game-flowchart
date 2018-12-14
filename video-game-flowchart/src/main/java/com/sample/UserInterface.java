@@ -25,8 +25,16 @@ import javax.swing.JTextArea;
 public class UserInterface extends JFrame {
 
 	private JPanel contentPane;
+	private static JComboBox comboBox;
+	private static JTextArea textArea;
+	private JButton btnNewButton;
+	
 
 	public static String GetQuestions(Message msg, String question) {
+		textArea.setText(question);
+		for (String s : msg.questions) {
+			comboBox.addItem(s);
+		}
 		System.out.println(question);
 		String res = "Past";
 		return res;
@@ -101,13 +109,15 @@ public class UserInterface extends JFrame {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
 		contentPane.add(textArea, "2, 4, 29, 9, fill, fill");
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		contentPane.add(comboBox, "4, 14, 27, 1, fill, default");
 		
-		JButton btnNewButton = new JButton("Dalej");
+		btnNewButton = new JButton("Dalej");
 		contentPane.add(btnNewButton, "30, 18");
 	}
 
