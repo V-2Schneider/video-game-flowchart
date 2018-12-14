@@ -6,9 +6,8 @@ public class Message {
 	public String result = "";
 	public ArrayList<String> questions;
 	
-	public Message(ArrayList<String> questions) {
-		this.questions = new ArrayList<>();
-		this.questions = questions;
+	public Message() {
+		
 	}
 	
 	public void SetResult(String res) {

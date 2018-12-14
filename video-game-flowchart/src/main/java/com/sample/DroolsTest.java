@@ -15,13 +15,12 @@ public class DroolsTest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UserInterface frame = new UserInterface();
-					frame.setVisible(true);
 					// load up the knowledge base
 			        KieServices ks = KieServices.Factory.get();
 		    	    KieContainer kContainer = ks.getKieClasspathContainer();
 		        	KieSession kSession = kContainer.newKieSession("ksession-rules");
-
+		        	UserInterface frame = new UserInterface();
+					frame.setVisible(true);
 		            kSession.fireAllRules();
 				} catch (Exception e) {
 					e.printStackTrace();

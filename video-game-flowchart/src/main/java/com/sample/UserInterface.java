@@ -11,6 +11,9 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,17 +30,29 @@ public class UserInterface extends JFrame {
 	private JPanel contentPane;
 	private static JComboBox comboBox;
 	private static JTextArea textArea;
-	private JButton btnNewButton;
+	private static JButton btnNewButton;
 	
 
-	public static String GetQuestions(Message msg, String question) {
+	public static Message GetQuestions(ArrayList<String> ans, String question) throws InterruptedException {
 		textArea.setText(question);
-		for (String s : msg.questions) {
+		for (String s : ans) {
 			comboBox.addItem(s);
 		}
-		System.out.println(question);
-		String res = "Past";
-		return res;
+		final Message msg = new Message();
+		btnNewButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if ("next".equals(e.getActionCommand())) {
+					msg.SetResult(comboBox.getSelectedItem().toString());
+					System.out.println(msg.result);
+				}			
+			}
+			
+		});
+		btnNewButton.setSelected(true);
+		System.out.println("hemhemh");
+		System.out.println(msg.result);
+		return msg;
 	}
 	
 
@@ -119,6 +134,7 @@ public class UserInterface extends JFrame {
 		
 		btnNewButton = new JButton("Dalej");
 		contentPane.add(btnNewButton, "30, 18");
+		btnNewButton.setActionCommand("next");
 	}
 
 }

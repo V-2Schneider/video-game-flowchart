@@ -12,14 +12,14 @@ rule "Init"
 		ArrayList<String> ans = new ArrayList<>();
 		ans.add("PAST");
 		ans.add("Present");
-		Message mes = new Message(ans);
-		mes.SetResult(GetQuestions(mes, "LET'S PLAY A GAME\n\nfirst: what time period are you thinking?"));
+		Message mes = GetQuestions(ans, "LET'S PLAY A GAME\n\nfirst: what time period are you thinking?");
+		System.out.println("Halo, tutaj " + mes.result);
 		insert(mes);
 end
 
 rule "PAST"
 	when 
-		Message(result == "Past")
+		Message(result == "PAST")
 	then
 		System.out.println("yee");
 end
