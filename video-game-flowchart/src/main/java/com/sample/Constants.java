@@ -89,6 +89,8 @@ public class Constants {
 	public static final String TITLE_75 = "science fiction?";
 	public static final String TITLE_76 = "I like the way you think";
 	public static final String PAST = "PAST";
+	public static final String YES = "Yes";
+	public static final String NO = "No";
 
 	
 	private Constants() {
