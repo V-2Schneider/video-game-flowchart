@@ -12,7 +12,6 @@ rule "Init"
 		
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.PAST);
-		answers.add(Constants.PRESENT);
 		
 		ui.setAnswers(answers, Constants.TITLE_0);
 end
@@ -27,14 +26,13 @@ rule "messageStatusChanged"
 */
 rule "PAST"
 	when 
+		ui : UserInterface()
 		m : Message(message == Constants.PAST)
 	then
-		System.out.println("we in the moment boi");
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_01);
+		answers.add(Constants.TITLE_10);
+		ui.setAnswers(answers, Constants.TITLE_1);
 end
 
-rule "PRESENT"
-	when 
-		m : Message(message == Constants.PRESENT)
-	then
-		System.out.println("dwelling on the past, aren't we");
-end
+
