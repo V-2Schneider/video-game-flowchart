@@ -2,31 +2,39 @@ package com.sample
  
 import com.sample.Message;
 import java.util.ArrayList;
-import function com.sample.UserInterface.GetQuestions;
+import function com.sample.UserInterface.*;
  
-
 rule "Init"
 	when
+		ui : UserInterface()
 	then
 		System.out.println("Witam w grach komputerowych");
-		ArrayList<String> ans = new ArrayList<>();
-		ans.add("PAST");
-		ans.add("Present");
-		Message mes = GetQuestions(ans, "LET'S PLAY A GAME\n\nfirst: what time period are you thinking?");
-		System.out.println("Halo, tutaj " + mes.result);
-		insert(mes);
+		
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.PAST);
+		answers.add(Constants.PRESENT);
+		
+		ui.setAnswers(answers, Constants.TITLE_0);
 end
-
+/*
+rule "messageStatusChanged"
+	when
+		m : Message( status == Message.CHANGED )
+	then
+		System.out.println("message : " + m.getMessage());
+		m.setStatus(Message.ADRESSED);
+		update(m);
+*/
 rule "PAST"
 	when 
-		Message(result == "PAST")
+		m : Message(message == Constants.PAST)
 	then
-		System.out.println("yee");
+		System.out.println("we in the moment boi");
 end
 
 rule "PRESENT"
 	when 
-		Message(result == "Present")
+		m : Message(message == Constants.PRESENT)
 	then
-		System.out.println("What???");
+		System.out.println("dwelling on the past, aren't we");
 end

@@ -28,38 +28,25 @@ import javax.swing.JTextArea;
 public class UserInterface extends JFrame {
 
 	private JPanel contentPane;
-	private static JComboBox comboBox;
-	private static JTextArea textArea;
-	private static JButton btnNewButton;
+	private JComboBox<String> comboBox;
+	private JTextArea textArea;
+	private JButton btnNewButton;
 	
-
-	public static Message GetQuestions(ArrayList<String> ans, String question) throws InterruptedException {
-		textArea.setText(question);
-		for (String s : ans) {
+	private KieSession kSession;
+	
+	public void setAnswers(ArrayList<String> answers, String title) {
+		comboBox.removeAllItems();
+		textArea.setText(title);
+		
+		for (String s : answers) {
 			comboBox.addItem(s);
 		}
-		final Message msg = new Message();
-		btnNewButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				if ("next".equals(e.getActionCommand())) {
-					msg.SetResult(comboBox.getSelectedItem().toString());
-					System.out.println(msg.result);
-				}			
-			}
-			
-		});
-		btnNewButton.setSelected(true);
-		System.out.println("hemhemh");
-		System.out.println(msg.result);
-		return msg;
 	}
 	
-
 	/**
 	 * Create the frame.
 	 */
-	public UserInterface() {
+	public UserInterface(KieSession kSession) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 463, 272);
 		contentPane = new JPanel();
@@ -129,12 +116,36 @@ public class UserInterface extends JFrame {
 		textArea.setLineWrap(true);
 		contentPane.add(textArea, "2, 4, 29, 9, fill, fill");
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<String>();
 		contentPane.add(comboBox, "4, 14, 27, 1, fill, default");
 		
 		btnNewButton = new JButton("Dalej");
 		contentPane.add(btnNewButton, "30, 18");
 		btnNewButton.setActionCommand("next");
+		
+		btnNewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//przeczytaj odpowiedz, 
+				//wrzuc wynik do nowego obiektu message,
+				//wsadz go do pamieci droolsa i zapusc reguly.
+				kSession.insert(new Message(comboBox.getSelectedItem().toString()));
+				kSession.fireAllRules();
+			}
+		});
+		
+		this.setkSession(kSession);
+		kSession.insert(this);
+		kSession.fireAllRules();
+	}
+
+	public KieSession getkSession() {
+		return kSession;
+	}
+
+	public void setkSession(KieSession kSession) {
+		this.kSession = kSession;
 	}
 
 }
