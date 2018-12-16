@@ -15,7 +15,7 @@ public class Constants {
 	public static final String TITLE_01 = "Recent past";
 	public static final String TITLE_2 = "Like the cold war?";
 	public static final String TITLE_3 = "Wild wild west?";
-	public static final String TITLE_4 = "80's";
+	public static final String TITLE_4 = "80's?";
 	public static final String TITLE_5 = "How about some alternate history?";
 	public static final String TITLE_6 = "Date doesn't matter, I need to cure my plague!";
 	public static final String TITLE_7 = "1930's";
