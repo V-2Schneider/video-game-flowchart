@@ -29,6 +29,7 @@ rule "PAST"
 		ui : UserInterface()
 		m : Message(message == Constants.PAST)
 	then
+		retract(m);
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.TITLE_01);
 		answers.add(Constants.TITLE_10);
@@ -39,37 +40,145 @@ rule "recent past"
 	when
 		ui : UserInterface()
 		m : Message(message == Constants.TITLE_01)
-	then 
+	then
+		retract(m); 
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.YES);
 		answers.add(Constants.NO);
 		ui.setAnswers(answers, Constants.TITLE_2);
+		insert(new Message(Constants.TITLE_2));
 end
 
-rule "not like cold war"
+rule "YES like the Cold War"
 	when
 		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_01)
+		m1 : Message(message == Constants.TITLE_2)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_1_1);
+		System.out.println("Witam w liściu - " + Constants.GAME_1_1);
+end
+
+rule "NO like the Cold War"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_2)
 		m2 : Message(message == Constants.NO)
-	then 
+	then
+		retract(m1);
+		retract(m2);
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.YES);
 		answers.add(Constants.NO);
 		ui.setAnswers(answers, Constants.TITLE_3);
+		insert(new Message(Constants.TITLE_3));
 end
 
-rule "not like wild west"
+
+rule "YES wild wild west"
 	when
 		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_01)
+		m1 : Message(message == Constants.TITLE_3)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_3_1);
+		System.out.println("Witam w liściu - " + Constants.GAME_3_1);
+end
+		
+rule "NO wild wild west"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_3)
 		m2 : Message(message == Constants.NO)
-		m3 : Message(message == Constants.NO)
-	then 
+	then
+		retract(m1);
+		retract(m2); 
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.YES);
 		answers.add(Constants.NO);
 		ui.setAnswers(answers, Constants.TITLE_4);
+		insert(new Message(Constants.TITLE_4));
 end
 
+rule "YES 80's"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_4)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_5_3);
+		System.out.println("Witam w liściu - " + Constants.GAME_5_3);
+end
 
+rule "NO 80's"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_4)
+		m2 : Message(message == Constants.NO)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.YES);
+		answers.add(Constants.NO);
+		ui.setAnswers(answers, Constants.TITLE_5);
+		insert(new Message(Constants.TITLE_5));
+end
 
+rule "YES How about some alternate history?"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_5)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_7);
+		answers.add(Constants.TITLE_8);
+		answers.add(Constants.TITLE_9);
+		ui.setAnswers(answers, Constants.TITLE_5);
+		//tu do pamieci nowe message wrzuca listener z ui
+end
+
+rule "1930's"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_7)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_4_1);
+		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+end
+
+rule "An underwater city in 60's"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_8)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_4_1);
+		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+end
+
+rule "1930's"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_7)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_4_1);
+		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+end

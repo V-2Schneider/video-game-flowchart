@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Ta klasa przechowuje sta³e potrzebne do projektu, 
- * z tego wzglêdu nie powinny byæ tworzone jej instancje, 
- * wiêc konstruktor jest prywatny.
+ * Ta klasa przechowuje staï¿½e potrzebne do projektu, 
+ * z tego wzglï¿½du nie powinny byï¿½ tworzone jej instancje, 
+ * wiï¿½c konstruktor jest prywatny.
  */
 public class Constants {
 
@@ -19,7 +19,7 @@ public class Constants {
 	public static final String TITLE_5 = "How about some alternate history?";
 	public static final String TITLE_6 = "Date doesn't matter, I need to cure my plague!";
 	public static final String TITLE_7 = "1930's";
-	public static final String TITLE_8 = "An underwater world in 30's";
+	public static final String TITLE_8 = "An underwater city in 60's";
 	public static final String TITLE_9 = "During world war II";
 	public static final String TITLE_10 = "Distant past";
 	public static final String TITLE_11 = "Fantasy or historical accuracy?";
@@ -91,9 +91,23 @@ public class Constants {
 	public static final String PAST = "PAST";
 	public static final String YES = "Yes";
 	public static final String NO = "No";
-
+	public static final String GAME_1_1 = "Papers, please";
+	public static final String GAME_2_1 = "Assasin's Creed III: Liberation";
+	public static final String GAME_3_1 = "Call of Juarez: Gunslinger";
+	public static final String GAME_3_2 = "Terraria";
+	public static final String GAME_3_3 = "Assasin's Creed";
+	public static final String GAME_4_1 = "Contrast";
+	public static final String GAME_4_2 = "Magicka";
+	public static final String GAME_4_3 = "Reus";
+	public static final String GAME_4_4 = "Mount & Blade: Warband";
+	public static final String GAME_5_1 = "Pathologic";
+	public static final String GAME_5_2 = "Miasmata";
+	public static final String GAME_5_3 = "Hotline Miami";
+	public static final String GAME_5_4 = "Dungeon Land";
+	public static final String GAME_5_5 = "Swords & Soldiers";
 	
 	private Constants() {
 	}
 }
+
 
