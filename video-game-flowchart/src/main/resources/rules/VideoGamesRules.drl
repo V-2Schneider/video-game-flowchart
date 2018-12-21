@@ -3,7 +3,11 @@ package com.sample
 import com.sample.Message;
 import java.util.ArrayList;
 import function com.sample.UserInterface.*;
- 
+
+//DLA REGU� Z ODPOWIEDZIAMI TYPU TAK/NIE INSERTUJEMY DODATKOWO PYTANIE DO PAMIECI,
+//W MOMENCIE RESOLVOWANIA WYRZUCAMY OBA OBIEKTY.
+//DLA REGU� Z ODPOWIEDZIAMI UNIKATOWYMI NIE INSERTUJEMY NIC Z POZIOMU REGULY
+
 rule "Init"
 	when
 		ui : UserInterface()
@@ -15,15 +19,7 @@ rule "Init"
 		
 		ui.setAnswers(answers, Constants.TITLE_0);
 end
-/*
-rule "messageStatusChanged"
-	when
-		m : Message( status == Message.CHANGED )
-	then
-		System.out.println("message : " + m.getMessage());
-		m.setStatus(Message.ADRESSED);
-		update(m);
-*/
+
 rule "PAST"
 	when 
 		ui : UserInterface()
@@ -60,7 +56,7 @@ rule "YES like the Cold War"
 		retract(m2);
 		ArrayList<String> answers = new ArrayList<>();
 		ui.setAnswers(answers, Constants.GAME_1_1);
-		System.out.println("Witam w liściu - " + Constants.GAME_1_1);
+		System.out.println("Witam w lisciu - " + Constants.GAME_1_1);
 end
 
 rule "NO like the Cold War"
@@ -89,7 +85,7 @@ rule "YES wild wild west"
 		retract(m2); 
 		ArrayList<String> answers = new ArrayList<>();
 		ui.setAnswers(answers, Constants.GAME_3_1);
-		System.out.println("Witam w liściu - " + Constants.GAME_3_1);
+		System.out.println("Witam w lisciu - " + Constants.GAME_3_1);
 end
 		
 rule "NO wild wild west"
@@ -117,7 +113,7 @@ rule "YES 80's"
 		retract(m2); 
 		ArrayList<String> answers = new ArrayList<>();
 		ui.setAnswers(answers, Constants.GAME_5_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_5_3);
+		System.out.println("Witam w lisciu - " + Constants.GAME_5_3);
 end
 
 rule "NO 80's"
@@ -131,7 +127,7 @@ rule "NO 80's"
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(Constants.YES);
 		answers.add(Constants.NO);
-		ui.setAnswers(answers, Constants.TITLE_5);
+		ui.setAnswers(answers, Constants.TITLE_5);//How about some alternate history?
 		insert(new Message(Constants.TITLE_5));
 end
 
@@ -147,8 +143,21 @@ rule "YES How about some alternate history?"
 		answers.add(Constants.TITLE_7);
 		answers.add(Constants.TITLE_8);
 		answers.add(Constants.TITLE_9);
-		ui.setAnswers(answers, Constants.TITLE_5);
-		//tu do pamieci nowe message wrzuca listener z ui
+		ui.setAnswers(answers, Constants.CHOICE);
+end
+
+rule "NO How about some alternate history?"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_5)
+		m2 : Message(message == Constants.NO)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_16);
+		answers.add(Constants.GAME_17);
+		ui.setAnswers(answers, Constants.TITLE_6);
 end
 
 rule "1930's"
@@ -159,7 +168,7 @@ rule "1930's"
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
 		ui.setAnswers(answers, Constants.GAME_4_1);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+		System.out.println("Witam w lisciu - " + Constants.GAME_4_1);
 end
 
 rule "An underwater city in 60's"
@@ -169,19 +178,21 @@ rule "An underwater city in 60's"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_1);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+		answers.add(Constants.GAME_13);//Bioshocki
+		answers.add(Constants.GAME_14);
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE);
 end
 
-rule "1930'ss"
+rule "During WWII"
 	when
 		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_7)
+		m1 : Message(message == Constants.TITLE_9)
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_1);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_1);
+		ui.setAnswers(answers, Constants.GAME_15);
+		System.out.println("Witam w lisciu - " + Constants.GAME_15);
 end
 
 rule "distant past"
@@ -194,47 +205,509 @@ rule "distant past"
 		answers.add(Constants.TITLE_12);
 		answers.add(Constants.TITLE_59);
 		answers.add(Constants.TITLE_75);
-		ui.setAnswers(answers, Constants.TITLE_11);
-		insert(new Message(Constants.TITLE_11));
+		ui.setAnswers(answers, Constants.TITLE_11);//Fantasy or historical accuracy?
 end
 
-rule "Fantasy or accuracy"
+rule "Fantasy"
 	when
 		ui : UserInterface()
-		m : Message(message == Constants.TITLE_10)
+		m : Message(message == Constants.TITLE_12) //fantasy
 	then
 		retract(m); 
 		ArrayList<String> answers = new ArrayList<>();
-		answers.add(Constants.TITLE_12);
-		answers.add(Constants.TITLE_59);
-		answers.add(Constants.TITLE_75);
-		ui.setAnswers(answers, Constants.TITLE_11);
-		insert(new Message(Constants.TITLE_11));
+		answers.add(Constants.TITLE_14); //silly
+		answers.add(Constants.TITLE_18); //super serious
+		answers.add(Constants.TITLE_57); //scary
+		ui.setAnswers(answers, Constants.TITLE_13);//how serious are we being
 end
 
-rule "science fiction?"
+rule "Let's be silly"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_14) //silly
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_15); //Carnival silly
+		answers.add(Constants.TITLE_16); //Childish silly
+		answers.add(Constants.TITLE_17); //Satirical silly
+		ui.setAnswers(answers, "How silly?");//how serious are being
+end
+
+rule "Carnival silly"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_15) //Carnival silly
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_5_4); //Dungeon Land
+		System.out.println("Witam w lisciu - " + Constants.GAME_5_4);
+end
+
+rule "Childish silly"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_16) //Childish silly
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_5_5); //Swords & Soldiers
+		System.out.println("Witam w lisciu - " + Constants.GAME_5_5);
+end
+
+rule "Satirical silly"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_17) //Childish silly
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_4_2); //Swords & Soldiers
+		System.out.println("Witam w lisciu - " + Constants.GAME_4_2);
+end
+
+rule "Super serious"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_18) //Super serious
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_20); //Army leader
+		answers.add(Constants.TITLE_28); //Hero
+		answers.add(Constants.TITLE_50); //child
+		answers.add(Constants.TITLE_51); //pirate
+		answers.add(Constants.TITLE_54); //thief
+		answers.add(Constants.TITLE_55); //God!
+		answers.add(Constants.TITLE_56); //explorer
+		ui.setAnswers(answers, Constants.TITLE_19);//Because you are a...
+end
+
+rule "Army leader"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_20) //Army leader
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_22); //Fantasy europe
+		answers.add(Constants.TITLE_26); //Middlearth
+		answers.add(Constants.TITLE_27); //Ancient Greece
+		ui.setAnswers(answers, Constants.TITLE_21);//From where?
+end
+
+rule "Fantasy europe"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_22) //
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_24); //Brave knights
+		answers.add(Constants.TITLE_25); //Magical beasts
+		ui.setAnswers(answers, Constants.TITLE_23);//Who are your followers?
+end
+
+rule "Brave knights"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_24) //Brave knights
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_6); //Stronghold Legends
+		answers.add(Constants.GAME_7); //Majestic 2
+		ui.setAnswers(answers, Constants.CHOICE); 
+		System.out.println("Witam w lisciu - " + Constants.CHOICE);
+end
+
+rule "Magical beasts"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_25) //Magical beasts
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_8); //Warlock
+		answers.add(Constants.GAME_9); //War for the Overworld
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); 
+end
+
+rule "Middle earth"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_26)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_10); //battle for middleearth
+		System.out.println("Witam w lisciu - " + Constants.GAME_10);
+end
+
+rule "Ancient greece"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_27)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_11); //age of mythology
+		System.out.println("Witam w lisciu - " + Constants.GAME_11);
+end
+
+rule "Hero"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_28)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_30); //Asia
+		answers.add(Constants.TITLE_31); //Persia
+		answers.add(Constants.TITLE_33); //A fictional world
+		answers.add(Constants.TITLE_49); //a post-apocalyptic landscape
+		ui.setAnswers(answers, Constants.TITLE_29);//In the land of...?
+end
+
+rule "Asia"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_30)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_12); //Jaed Empire
+		System.out.println("Witam w lisciu - " + Constants.GAME_12);
+end
+
+rule "Persia"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_31)
+	then
+		retract(m);
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.YES);
+		answers.add(Constants.NO);
+		ui.setAnswers(answers, Constants.TITLE_32);//Is there timey-wimey stuff?
+		insert(new Message(Constants.TITLE_32));
+end
+
+rule "YES timey wimey"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_32)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2);  
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_18); //PoP: Sands of Time
+		System.out.println("Witam w lisciu - " + Constants.GAME_18);
+end
+
+rule "NO timey wimey"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_32)
+		m2 : Message(message == Constants.NO)
+	then
+		retract(m1);
+		retract(m2);  
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_19); //PoP
+		System.out.println("Witam w lisciu - " + Constants.GAME_19);
+end
+
+rule "A fictional world"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_33)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_35); //Nameless man
+		answers.add(Constants.TITLE_36); //hipster
+		answers.add(Constants.TITLE_37); //young boy
+		answers.add(Constants.TITLE_38); //Monster hunter
+		answers.add(Constants.TITLE_39); //Let me make my own character
+		ui.setAnswers(answers, Constants.TITLE_34);//Where you are a...?
+end
+
+rule "Nameless man"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_35)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_20); //Gothic'ki
+		answers.add(Constants.GAME_21);
+		answers.add(Constants.GAME_22); 
+		answers.add(Constants.GAME_23); 
+		answers.add(Constants.GAME_24); //Risen  
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); 
+end
+
+rule "hipster"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_36)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_25); //Sword & Sorcery
+		System.out.println("Witam w lisciu - " + Constants.GAME_25);
+end
+
+rule "young boy"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_37)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_26); //The Last Remnant
+		System.out.println("Witam w lisciu - " + Constants.GAME_26);
+end
+
+rule "Monster Hunter"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_38) //Monster Hunter
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_27); //Wiedzminy
+		answers.add(Constants.GAME_28); 
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); 
+end
+
+rule "Let me make my own character"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_39); //Let me make my own character
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.TITLE_41); //A horde
+		answers.add(Constants.TITLE_42); //A tyrant
+		answers.add(Constants.TITLE_43); //Death itself
+		answers.add(Constants.TITLE_44); //Decaying alliance
+		answers.add(Constants.TITLE_45); //Mad Alchemist
+		answers.add(Constants.TITLE_46); //corruption and chaos
+		answers.add(Constants.TITLE_47); //destructive god
+		answers.add(Constants.TITLE_48); //dragons
+		ui.setAnswers(answers, Constants.TITLE_40); //Ok, what will you fight?
+end
+
+rule "A horde"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_41); //A horde
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_29); //"Dragon Age"
+		System.out.println("Witam w lisciu - " + Constants.GAME_29);
+end
+
+rule "A tyrant"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_42); //A tyrant
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_30); //"Fable"
+		System.out.println("Witam w lisciu - " + Constants.GAME_30);
+end
+
+rule "Death itself"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_43); //Death itself
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_31); //"Fable"
+		System.out.println("Witam w lisciu - " + Constants.GAME_31);
+end
+
+rule "Decaying alliance"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_44); //Decaying alliance
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_32); //"Avadon"
+		System.out.println("Witam w lisciu - " + Constants.GAME_32);
+end
+
+rule "Mad Alchemist"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_45); //Mad Alchemist
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_33); //"Torchlight 2"
+		System.out.println("Witam w lisciu - " + Constants.GAME_33);
+end
+
+rule "corruption and chaos"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_46); //corruption and chaos
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_34); //"Sacred 2"
+		System.out.println("Witam w lisciu - " + Constants.GAME_34);
+end
+
+rule "a destrucive god"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_47)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_40); //TES oblivion i morrowind
+		answers.add(Constants.GAME_41);  
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); 
+end
+
+rule "dragons"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_48)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_42);
+		System.out.println("Witam w lisciu - " + Constants.GAME_42); //skyrim
+end
+
+rule "post-apocalyptic landscape"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_49); //
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_43);
+		System.out.println("Witam w lisciu - " + Constants.GAME_43); //Bastion
+end
+
+rule "child"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_50); //child
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_44);
+		System.out.println("Witam w lisciu - " + Constants.GAME_44); //Brothers
+end
+
+rule "pirate"
+	when
+		ui : UserInterface()
+		m : Message(message == Constants.TITLE_51)
+	then
+		retract(m); 
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.YES);
+		answers.add(Constants.TITLE_53);
+		ui.setAnswers(answers, Constants.TITLE_52);
+		insert(new Message(Constants.TITLE_52));//are you good?
+end
+
+rule "Well I'm new... + pirate"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_52)
+		m2 : Message(message == Constants.TITLE_53)
+	then
+		retract(m1);
+		retract(m2);
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_37);//MONKEY ISLANDy
+		answers.add(Constants.GAME_38);
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); 
+end
+
+rule "YES + pirate"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_52)
+		m2 : Message(message == Constants.YES)
+	then
+		retract(m1);
+		retract(m2); 
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_39);
+		System.out.println("Witam w lisciu - " + Constants.GAME_39); // RISEN 2
+end
+
+rule "thief"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_54)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		answers.add(Constants.GAME_45);//thief i dark mod
+		answers.add(Constants.GAME_46);
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); // THIEF TIMES TWO
+end
+
+rule "god"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_55)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_47);
+		System.out.println("Witam w lisciu - " + Constants.GAME_47); 
+end
+
+rule "explorer"
+	when
+		ui : UserInterface()
+		m1 : Message(message == Constants.TITLE_56)
+	then
+		retract(m1);
+		ArrayList<String> answers = new ArrayList<>();
+		ui.setAnswers(answers, Constants.GAME_48);
+		System.out.println("Witam w lisciu - " + Constants.GAME_48); //terrraria
+end
+
+//--------------------------------------------------------
+//Prawy podgraf
+//--------------------------------------------------------
+
+rule "I like the way you think"
 	when
 		ui : UserInterface()
 		m : Message(message == Constants.TITLE_75)
 	then
 		retract(m); 
 		ArrayList<String> answers = new ArrayList<>();
-		answers.add(Constants.YES);
+		answers.add(Constants.GAME_3_3);
+		answers.add(Constants.GAME_2_1);
 		ui.setAnswers(answers, Constants.TITLE_76);
-		insert(new Message(Constants.TITLE_76));
-end
-
-rule "YES I like the way you think"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_76)
-		m2 : Message(message == Constants.YES)
-	then
-		retract(m1);
-		retract(m2); 
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_3_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_3_3);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE);
 end
 
 rule "historical accuracy"
@@ -258,7 +731,7 @@ rule "a famous knight"
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
 		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4);
+		System.out.println("Witam w lisciu - " + Constants.GAME_4_4);
 end
 
 rule "a builder of empires"
@@ -296,8 +769,8 @@ rule "exploring new world"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // EUROPA III UNIVERSALIS
+		ui.setAnswers(answers, Constants.GAME_51);
+		System.out.println("Witam w lisciu - " + Constants.GAME_51); // EUROPA III UNIVERSALIS
 end
 
 rule "leading my armies"
@@ -307,19 +780,19 @@ rule "leading my armies"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // NAPOLEON TOTAL WAR
+		ui.setAnswers(answers, Constants.GAME_52);
+		System.out.println("Witam w lisciu - " + Constants.GAME_52); // NAPOLEON TOTAL WAR
 end
 
-rule "renessaince"
+rule "Renaissaince"
 	when
 		ui : UserInterface()
 		m1 : Message(message == Constants.TITLE_68)
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // ANNO 1404
+		ui.setAnswers(answers, Constants.GAME_50);
+		System.out.println("Witam w lisciu - " + Constants.GAME_50); // ANNO 1404
 end
 
 rule "medieval ages"
@@ -343,8 +816,8 @@ rule "both!"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // MEDIEVAL TOTAL WAR
+		ui.setAnswers(answers, Constants.GAME_53);
+		System.out.println("Witam w lisciu - " + Constants.GAME_53); // MEDIEVAL TOTAL WAR
 end
 
 rule "strategy"
@@ -354,8 +827,8 @@ rule "strategy"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // CRUSADER KINGS
+		ui.setAnswers(answers, Constants.GAME_58);
+		System.out.println("Witam w lisciu - " + Constants.GAME_58); // CRUSADER KINGS
 end
 
 rule "tactics"
@@ -365,8 +838,13 @@ rule "tactics"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // AGE OF EMPIRES II, STRONGHOLD, CRUSADER, STRONGHOLD, I CAN'T SEE THE REST OF THE TITLES
+		answers.add(Constants.GAME_59);
+		answers.add(Constants.GAME_54);
+		answers.add(Constants.GAME_55);
+		answers.add(Constants.GAME_56);
+		answers.add(Constants.GAME_57);
+		ui.setAnswers(answers, Constants.CHOICE);
+		System.out.println("Witam w lisciu - " + Constants.CHOICE); // AGE OF EMPIRES II, STRONGHOLD, CRUSADER, STRONGHOLD, I CAN'T SEE THE REST OF THE TITLES
 end
 
 rule "roman empire"
@@ -376,8 +854,8 @@ rule "roman empire"
 	then
 		retract(m1);
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // ROME TOTAL WAR
+		ui.setAnswers(answers, Constants.GAME_49);
+		System.out.println("Witam w lisciu - " + Constants.GAME_49); // ROME TOTAL WAR
 end
 
 rule "what about scary?"
@@ -387,7 +865,7 @@ rule "what about scary?"
 	then
 		retract(m); 
 		ArrayList<String> answers = new ArrayList<>();
-		answers.add(Constants.YES);
+		answers.add(Constants.OK);
 		ui.setAnswers(answers, Constants.TITLE_58);
 		insert(new Message(Constants.TITLE_58));
 end
@@ -396,148 +874,11 @@ rule "you shouldn't have said that"
 	when
 		ui : UserInterface()
 		m1 : Message(message == Constants.TITLE_58)
-		m2 : Message(message == Constants.YES)
+		m2 : Message(message == Constants.OK)
 	then
 		retract(m1);
 		retract(m2); 
 		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_5_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_5_3); //AMNESIA
-end
-
-rule "explorer"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_56)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_3_2);
-		System.out.println("Witam w liściu - " + Constants.GAME_3_2); 
-end
-
-rule "thief"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_54)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_4);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_4); // THIEF TIMES TWO
-end
-
-rule "god"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_55)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); 
-end
-
-rule "pirate"
-	when
-		ui : UserInterface()
-		m : Message(message == Constants.TITLE_51)
-	then
-		retract(m); 
-		ArrayList<String> answers = new ArrayList<>();
-		answers.add(Constants.YES);
-		answers.add(Constants.TITLE_53);
-		ui.setAnswers(answers, Constants.TITLE_52);
-		insert(new Message(Constants.TITLE_52));
-end
-
-rule "Well I'm new..."
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_53)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //MONKEY ISLAND
-end
-
-rule "YES pirate"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_52)
-		m2 : Message(message == Constants.YES)
-	then
-		retract(m1);
-		retract(m2); 
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_5_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_5_3); // RISEN 2
-end
-
-rule "death itself"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_43)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //DARK SOULS
-end
-
-rule "a decaying aliance"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_44)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //AVA%% the dark fortress
-end
-
-rule "a mad alchemist"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_45)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //TORCHLIGHT II
-end
-
-rule "corruption and chaos"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_46)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //sacred 2, sacred citadel
-end
-
-
-rule "a destrucive god"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_47)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //morrowind, oblivion, skyrim
-end
-
-rule "dragons"
-	when
-		ui : UserInterface()
-		m1 : Message(message == Constants.TITLE_48)
-	then
-		retract(m1);
-		ArrayList<String> answers = new ArrayList<>();
-		ui.setAnswers(answers, Constants.GAME_4_3);
-		System.out.println("Witam w liściu - " + Constants.GAME_4_3); //skyrim
+		ui.setAnswers(answers, Constants.GAME_36);
+		System.out.println("Witam w lisciu - " + Constants.GAME_36); //AMNESIA
 end

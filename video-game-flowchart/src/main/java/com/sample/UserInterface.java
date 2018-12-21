@@ -33,6 +33,7 @@ public class UserInterface extends JFrame {
 	private JButton btnNewButton;
 	
 	private KieSession kSession;
+	private JButton btnWstecz;
 	
 	public void setAnswers(ArrayList<String> answers, String title) {
 		comboBox.removeAllItems();
@@ -43,12 +44,20 @@ public class UserInterface extends JFrame {
 		}
 	}
 	
+	public void startNewKSession() {
+		KieServices ks = KieServices.Factory.get();
+	    KieContainer kContainer = ks.getKieClasspathContainer();
+    	KieSession kSession = kContainer.newKieSession("ksession-rules");
+    	kSession.insert(this);
+    	this.kSession = kSession;
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public UserInterface(KieSession kSession) {
+	public UserInterface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 463, 272);
+		setBounds(100, 100, 227, 175);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,6 +66,16 @@ public class UserInterface extends JFrame {
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -114,13 +133,16 @@ public class UserInterface extends JFrame {
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
-		contentPane.add(textArea, "2, 4, 29, 9, fill, fill");
+		contentPane.add(textArea, "2, 2, 5, 7, fill, fill");
 		
 		comboBox = new JComboBox<String>();
-		contentPane.add(comboBox, "4, 14, 27, 1, fill, default");
+		contentPane.add(comboBox, "2, 10, 5, 1, fill, default");
+		
+		btnWstecz = new JButton("Od pocz\u0105tku");
+		contentPane.add(btnWstecz, "2, 12");
 		
 		btnNewButton = new JButton("Dalej");
-		contentPane.add(btnNewButton, "30, 18");
+		contentPane.add(btnNewButton, "6, 12");
 		btnNewButton.setActionCommand("next");
 		
 		btnNewButton.addActionListener(new ActionListener() {
@@ -135,8 +157,17 @@ public class UserInterface extends JFrame {
 			}
 		});
 		
-		this.setkSession(kSession);
-		kSession.insert(this);
+		btnWstecz.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//przycisk "Od poczatku"
+				startNewKSession();
+				kSession.fireAllRules();
+			}
+		});
+	
+		startNewKSession();
 		kSession.fireAllRules();
 	}
 

@@ -16,11 +16,11 @@ public class DroolsTest {
 			public void run() {
 				try {
 //					 load up the knowledge base
-					KieServices ks = KieServices.Factory.get();
-				    KieContainer kContainer = ks.getKieClasspathContainer();
-			    	KieSession kSession = kContainer.newKieSession("ksession-rules");
+//					KieServices ks = KieServices.Factory.get();
+//				    KieContainer kContainer = ks.getKieClasspathContainer();
+//			    	KieSession kSession = kContainer.newKieSession("ksession-rules");
 		        	
-			    	UserInterface frame = new UserInterface(kSession);
+			    	UserInterface frame = new UserInterface();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
